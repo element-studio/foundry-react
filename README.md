@@ -1,2 +1,6 @@
 # foundry-react
-Foundry React
+
+Foundry React core and templates
+Story book in the making
+
+Written in type script
