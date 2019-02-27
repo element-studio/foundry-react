@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Input from '@/reactform/containers/FormInputContainer.js';
+import Input from '../reactform/containers/FormInputContainer.js';
 
 export default class CurrencyInput extends Input {
 

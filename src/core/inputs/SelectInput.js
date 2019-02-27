@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import * as tools from '@utils/tools.js';
+import * as tools from '../../utils/tools.js';
 
-import Input from '@core/reactform/containers/FormInputContainer.js';
-import Search from '@core/inputs/SearchInput.js';
+import Input from '../reactform/containers/FormInputContainer.js';
+import Search from '../inputs/SearchInput.js';
 
 export default class SelectInput extends Input {
     constructor(props) {
@@ -19,6 +19,10 @@ export default class SelectInput extends Input {
             optionsHeight: 0,
             searchTerms: ''
         };
+
+        this.selectContainer = React.createRef();
+        this.dropdownSearch = React.createRef();
+        this.optionsList = React.createRef();
     }
 
     /*
@@ -86,15 +90,15 @@ export default class SelectInput extends Input {
             },
             () => {
                 if (this.state.isFocused) {
-                    if (this.refs.DropdownSearch) {
-                        this.refs.DropdownSearch.focus();
+                    if (this.dropdownSearch.current) {
+                        this.dropdownSearch.current.focus();
                     }
-                    if (this.refs.OptionsList) {
+                    if (this.optionsList.current) {
                         if (!this.props.resizeOptionsHeight) {
                             return;
                         }
 
-                        let optionsPosition = tools.offset(this.refs.OptionsList),
+                        let optionsPosition = tools.offset(this.optionsList.current),
                             optionsHeight = document.documentElement.clientHeight - optionsPosition.top - 20;
 
                         this.setState({
@@ -107,14 +111,14 @@ export default class SelectInput extends Input {
     };
 
     handle_bodyClick = (e) => {
-        if (!this.refs.selectContainer.contains(e.target) && this.state.isFocused) {
+        if (!this.selectContainer.current.contains(e.target) && this.state.isFocused) {
             this.setState({
                 isFocused: false,
                 searchTerms: ''
             });
         } else {
-            if (this.refs.DropdownSearch) {
-                this.refs.DropdownSearch.focus();
+            if (this.dropdownSearch.current) {
+                this.dropdownSearch.current.focus();
             }
         }
     };
@@ -259,7 +263,7 @@ export default class SelectInput extends Input {
         let options = this.printOptions('li');
 
         return (
-            <fieldset ref="selectContainer" className="field_set" onKeyUp={this.handle_keyup}>
+            <fieldset ref={this.selectContainer} className="field_set" onKeyUp={this.handle_keyup}>
                 {this.props.label ? (
                     <label className="select_label type-label" htmlFor={this.props.name} data-label={this.props.label}>
                         {this.props.label}
@@ -298,7 +302,7 @@ export default class SelectInput extends Input {
                             <div className="select_dropdown">
                                 {this.props.searchable ? (
                                     <Search
-                                        ref="DropdownSearch"
+                                        ref={this.dropdownSearch}
                                         className="select_search"
                                         onChange={this.handle_search}
                                         onClear={this.handle_searchClear}
@@ -308,7 +312,7 @@ export default class SelectInput extends Input {
                                     />
                                 ) : null}
                                 <ul
-                                    ref="OptionsList"
+                                    ref={this.optionsList}
                                     className="select_options"
                                     style={this.props.resizeOptionsHeight ? { maxHeight: this.state.optionsHeight } : {}}
                                 >

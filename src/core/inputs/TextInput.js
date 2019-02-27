@@ -1,11 +1,9 @@
 import * as React from 'react';
 
-import Input from '@core/reactform/containers/FormInputContainer.js';
+import Input from '../reactform/containers/FormInputContainer.js';
 
 export default class TextInput extends Input {
-
     constructor(props) {
-
         super(props);
 
         this.state = {
@@ -14,7 +12,6 @@ export default class TextInput extends Input {
             failedValidations: [],
             value: null
         };
-
     }
 
     /*
@@ -23,7 +20,6 @@ export default class TextInput extends Input {
      * ----------
      */
     componentWillMount() {
-
         if (typeof this.props.attachToValidationGroup === 'function') {
             this.props.attachToValidationGroup(this); // Attaching the component to the form
         }
@@ -34,30 +30,25 @@ export default class TextInput extends Input {
     }
 
     componentWillUnmount() {
-
         if (typeof this.props.detachFromValidationGroup === 'function') {
             this.props.detachFromValidationGroup(this); // Detaching if unmounting
         }
     }
 
     componentWillReceiveProps(nextProps) {
-
         if (nextProps && this.props.controllable) {
-
-
             if (
-				nextProps.value !== null ||
-				typeof nextProps.value !== 'undefined' ||
-				nextProps.defaultValue !== null ||
-				typeof nextProps.defaultValue !== 'undefined') {
-
-                    this.setValue( nextProps.value || nextProps.defaultValue);
-
+                nextProps.value !== null ||
+                typeof nextProps.value !== 'undefined' ||
+                nextProps.defaultValue !== null ||
+                typeof nextProps.defaultValue !== 'undefined'
+            ) {
+                this.setValue(nextProps.value || nextProps.defaultValue);
             }
         }
 
         if (typeof nextProps.failedValidations !== 'undefined' && nextProps.failedValidations != null) {
-            this.setState({failedValidations: nextProps.failedValidations});
+            this.setState({ failedValidations: nextProps.failedValidations });
         }
     }
 
@@ -68,40 +59,41 @@ export default class TextInput extends Input {
      * ----------
      */
     handle_onChange = (e) => {
-		this.setValue(e.target.value);
+        this.setValue(e.target.value);
 
-
-		if (typeof this.props.onChange === 'function') {
-			this.props.onChange({name: e.target.name, value: e.target.value});
-		}
-
+        if (typeof this.props.onChange === 'function') {
+            this.props.onChange({ name: e.target.name, value: e.target.value });
+        }
     };
 
     handle_onKeyDown = (e) => {
-        if(this.props.disableEnterButton){
-            if(e.keyCode == 13) {
+        if (this.props.disableEnterButton) {
+            if (e.keyCode == 13) {
                 e.preventDefault();
             }
         }
-    }
+    };
 
     setValue = (value) => {
-
-        if(value === this.state.value){ //if its the same value stop.
+        if (value === this.state.value) {
+            //if its the same value stop.
             return false;
         }
 
-        this.setState({
-            value
+        this.setState(
+            {
+                value
 
-            // When the value changes, wait for it to propagate and
-            // then validate the input
-        }, () => {
-            if (this.props.validateOnChange) { //if controllable then it'll just continuously loop - we have this in component will receive props for controllable
-                this.props.validate(this,true);
+                // When the value changes, wait for it to propagate and
+                // then validate the input
+            },
+            () => {
+                if (this.props.validateOnChange) {
+                    //if controllable then it'll just continuously loop - we have this in component will receive props for controllable
+                    this.props.validate(this, true);
+                }
             }
-        });
-
+        );
     };
 
     handle_focus = () => {
@@ -119,19 +111,15 @@ export default class TextInput extends Input {
     };
 
     select = (e) => {
-
         if (!this.props.selectTextOnEntry) {
-            return false
+            return false;
         }
         if (typeof e.target !== 'undefined') {
             if (typeof e.target.select !== 'undefined') {
                 e.target.select();
             }
         }
-
     };
-
-
 
     /*
      * ----------
@@ -140,37 +128,40 @@ export default class TextInput extends Input {
      */
     render() {
         return (
-
             <fieldset className={'field_set '}>
-				<div className={'field_wrapper'}>
-					{(this.props.label) ? <label htmlFor={this.props.name} className="text_input_label type-label" data-label={this.props.label}>{this.props.label}</label> : null }
+                <div className={'field_wrapper'}>
+                    {this.props.label ? (
+                        <label htmlFor={this.props.name} className="text_input_label type-label" data-label={this.props.label}>
+                            {this.props.label}
+                        </label>
+                    ) : null}
                     <input
-                        className={'text_input '  + this.props.classes + ((this.state.value) && (this.state.value != '') ? ' _has-value': ' ') + ((!this.state.isValid) ? ' _has-error' : ' ')}
+                        className={
+                            'text_input ' +
+                            this.props.classes +
+                            (this.state.value && this.state.value != '' ? ' _has-value' : ' ') +
+                            (!this.state.isValid ? ' _has-error' : ' ')
+                        }
                         id={this.props.name}
                         type={this.props.type}
                         name={this.props.name}
-                        disabled={(this.props.readOnly) ? 'disabled' :null}
+                        disabled={this.props.readOnly ? 'disabled' : null}
                         value={this.state.value || ''}
-                        min={ this.props.min }
-                        max={ this.props.max }
-                        step={ this.props.step }
+                        min={this.props.min}
+                        max={this.props.max}
+                        step={this.props.step}
                         onChange={this.handle_onChange}
                         onKeyDown={this.handle_onKeyDown}
                         placeholder={this.props.placeholder}
-					/>
-					{
-						(this.props.charLimit && typeof this.state.value == 'string')
-						?
-						<span className={"text_input_limit " + ((this.state.value.length > this.props.charLimit)? '_has-excess': '')}>
-						{(this.props.charLimit - this.state.value.length) + ' / ' + this.props.charLimit}
-						</span>
-						: null
-					}
+                    />
+                    {this.props.charLimit && typeof this.state.value == 'string' ? (
+                        <span className={'text_input_limit ' + (this.state.value.length > this.props.charLimit ? '_has-excess' : '')}>
+                            {this.props.charLimit - this.state.value.length + ' / ' + this.props.charLimit}
+                        </span>
+                    ) : null}
                 </div>
                 {this.printErrors()}
             </fieldset>
-
-
         );
     }
 }
@@ -182,18 +173,18 @@ const defaultProps = {
     value: '', //sets the default initial value
     defaultValue: '',
     className: '',
-    classes:'',
+    classes: '',
     tabIndex: '',
     label: null,
-    validations:'',
+    validations: '',
     validateOnChange: false,
-    min:null,
-    max:null,
-    step:null,
-    placeholder:null,
+    min: null,
+    max: null,
+    step: null,
+    placeholder: null,
 
     required: false,
-    readOnly:false,
+    readOnly: false,
 
     onChange: null,
     onClick: null,
@@ -206,5 +197,5 @@ const defaultProps = {
     controllable: false
 };
 
-const props = Object.assign({},Input.defaultProps);
-TextInput.defaultProps = Object.assign(props,defaultProps);
+const props = Object.assign({}, Input.defaultProps);
+TextInput.defaultProps = Object.assign(props, defaultProps);

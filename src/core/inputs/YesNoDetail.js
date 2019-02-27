@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import Input from '@/reactform/containers/FormInputContainer.js';
-import YesNoInput from '@/inputs/YesNoInput';
-import TextArea from '@/inputs/TextArea';
+import Input from '../reactform/containers/FormInputContainer.js';
+import YesNoInput from '../inputs/YesNoInput';
+import TextArea from '../inputs/TextArea';
 
 export default class YesNoDetail extends Input {
     constructor(props) {

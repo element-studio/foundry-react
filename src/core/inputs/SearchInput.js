@@ -9,6 +9,7 @@ export default class SearchInput extends React.Component {
         };
 
         this.timeOut = null;
+        this.selectRef = React.createRef();
     }
 
     componentDidMount() {
@@ -48,7 +49,7 @@ export default class SearchInput extends React.Component {
     };
 
     focus = () => {
-        this.refs.SearchInput.focus();
+        this.refs.selectRef.current.focus();
     };
 
     render() {
@@ -56,7 +57,7 @@ export default class SearchInput extends React.Component {
             <fieldset className="field_set">
                 <div className={'field_wrapper search-wrapper ' + this.props.className}>
                     <input
-                        ref="SearchInput"
+                        ref={this.selectRef}
                         type="search"
                         name={this.props.name}
                         id={this.props.name}

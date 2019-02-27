@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import CheckboxInput from '@core/inputs/CheckboxInput.js';
-import SearchInput from '@core/inputs/SearchInput.js';
+import CheckboxInput from '../inputs/CheckboxInput.js';
+import SearchInput from '../inputs/SearchInput.js';
 
 export default class MulticheckInput extends React.Component {
     constructor(props) {

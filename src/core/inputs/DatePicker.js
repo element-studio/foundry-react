@@ -1,15 +1,12 @@
 import * as React from 'react';
 
 import DatePicker from 'react-datepicker';
-import * as moment from 'moment'
-import Input from '@core/reactform/containers/FormInputContainer.js';
+import * as moment from 'moment';
+import Input from '../reactform/containers/FormInputContainer.js';
 import 'react-datepicker/dist/react-datepicker.css';
 
-
 export default class TextInput extends Input {
-
     constructor(props) {
-
         super(props);
 
         this.state = {
@@ -18,7 +15,6 @@ export default class TextInput extends Input {
             failedValidations: [],
             value: null
         };
-
     }
 
     /*
@@ -27,7 +23,6 @@ export default class TextInput extends Input {
      * ----------
      */
     componentWillMount() {
-
         if (typeof this.props.attachToValidationGroup === 'function') {
             this.props.attachToValidationGroup(this); // Attaching the component to the form
         }
@@ -38,30 +33,25 @@ export default class TextInput extends Input {
     }
 
     componentWillUnmount() {
-
         if (typeof this.props.detachFromValidationGroup === 'function') {
             this.props.detachFromValidationGroup(this); // Detaching if unmounting
         }
     }
 
     componentWillReceiveProps(nextProps) {
-
         if (nextProps && this.props.controllable) {
-
-
             if (
-				nextProps.value !== null ||
-				typeof nextProps.value !== 'undefined' ||
-				nextProps.defaultValue !== null ||
-				typeof nextProps.defaultValue !== 'undefined') {
-
-                    this.setValue( nextProps.value || nextProps.defaultValue);
-
+                nextProps.value !== null ||
+                typeof nextProps.value !== 'undefined' ||
+                nextProps.defaultValue !== null ||
+                typeof nextProps.defaultValue !== 'undefined'
+            ) {
+                this.setValue(nextProps.value || nextProps.defaultValue);
             }
         }
 
         if (typeof nextProps.failedValidations !== 'undefined' && nextProps.failedValidations != null) {
-            this.setState({failedValidations: nextProps.failedValidations});
+            this.setState({ failedValidations: nextProps.failedValidations });
         }
     }
 
@@ -73,27 +63,29 @@ export default class TextInput extends Input {
      */
 
     setValue = (value) => {
-
-        if(value === this.state.value){ //if its the same value stop.
+        if (value === this.state.value) {
+            //if its the same value stop.
             return false;
         }
 
-        this.setState({
-            value
+        this.setState(
+            {
+                value
 
-            // When the value changes, wait for it to propagate and
-            // then validate the input
-        }, () => {
-            if (this.props.validateOnChange) { //if controllable then it'll just continuously loop - we have this in component will receive props for controllable
-                this.props.validate(this,true);
+                // When the value changes, wait for it to propagate and
+                // then validate the input
+            },
+            () => {
+                if (this.props.validateOnChange) {
+                    //if controllable then it'll just continuously loop - we have this in component will receive props for controllable
+                    this.props.validate(this, true);
+                }
+                if (typeof this.props.onChange === 'function') {
+                    this.props.onChange({ name: e.target.name, value: e.target.value });
+                }
             }
-            if (typeof this.props.onChange === 'function') {
-                this.props.onChange({name: e.target.name, value: e.target.value});
-            }
-        });
-
+        );
     };
-
 
     /*
      * Logic
@@ -105,8 +97,6 @@ export default class TextInput extends Input {
         }
     };
 
-
-
     /*
      * ----------
      * Render
@@ -114,10 +104,13 @@ export default class TextInput extends Input {
      */
     render() {
         return (
-
             <fieldset className={'field_set'}>
-				<div className={'field_wrapper'}>
-					{(this.props.label) ? <label htmlFor={this.props.name} className="text_input_label type-label" data-label={this.props.label}>{this.props.label}</label> : null }
+                <div className={'field_wrapper'}>
+                    {this.props.label ? (
+                        <label htmlFor={this.props.name} className="text_input_label type-label" data-label={this.props.label}>
+                            {this.props.label}
+                        </label>
+                    ) : null}
 
                     <DatePicker
                         name={this.props.name}
@@ -134,8 +127,6 @@ export default class TextInput extends Input {
                 </div>
                 {this.printErrors()}
             </fieldset>
-
-
         );
     }
 }
@@ -147,18 +138,18 @@ const defaultProps = {
     value: '', //sets the default initial value
     defaultValue: '',
     className: '',
-    classes:'',
+    classes: '',
     tabIndex: '',
     label: null,
-    validations:'',
+    validations: '',
     validateOnChange: false,
-    min:null,
-    max:null,
-    step:null,
-    placeholder:null,
+    min: null,
+    max: null,
+    step: null,
+    placeholder: null,
 
     required: false,
-    readOnly:false,
+    readOnly: false,
 
     onChange: null,
     onClick: null,
@@ -171,5 +162,5 @@ const defaultProps = {
     controllable: false
 };
 
-const props = Object.assign({},Input.defaultProps);
-TextInput.defaultProps = Object.assign(props,defaultProps);
+const props = Object.assign({}, Input.defaultProps);
+TextInput.defaultProps = Object.assign(props, defaultProps);
