@@ -2,10 +2,42 @@ import * as React from 'react';
 
 import * as tools from '../../utils/tools.js';
 
-import Input from '../reactform/containers/FormInputContainer.js';
+import Input from '../reactform/containers/FormInputContainer';
 import Search from '../inputs/SearchInput.js';
 
 export default class SelectInput extends Input {
+    static defaultProps = Object.assign(Object.assign({}, Input.defaultProps), {
+        id: null,
+        name: 'selectname',
+        classes: '',
+        label: 'Choose an option...',
+
+        value: 'null',
+        defaults: [{ name: '-', id: 'null' }],
+        options: [{ name: 'Option 1', id: '1' }, { name: 'Option 2', id: '2' }], // title is optional too. { id:'', name:'', title:''}
+
+        icon: 'icon-ellipsis',
+
+        mapValue: 'id',
+        mapName: null,
+
+        validateOnChange: false,
+        resizeOptionsHeight: false,
+
+        searchable: false,
+        editable: true,
+
+        onChange: null,
+
+        showErrors: true,
+        controllable: false,
+        searchPlaceholder: null
+    });
+
+    public selectContainer: React.RefObject<HTMLFieldSetElement> = React.createRef();
+    public dropdownSearch: React.RefObject<Search> = React.createRef();
+    public optionsList: React.RefObject<HTMLUListElement> = React.createRef();
+
     constructor(props) {
         super(props);
 
@@ -19,10 +51,6 @@ export default class SelectInput extends Input {
             optionsHeight: 0,
             searchTerms: ''
         };
-
-        this.selectContainer = React.createRef();
-        this.dropdownSearch = React.createRef();
-        this.optionsList = React.createRef();
     }
 
     /*
@@ -77,11 +105,11 @@ export default class SelectInput extends Input {
      * User-driven events
      * @prefix handle_
      */
-    handle_toggleOpen = (e) => {
+    handle_toggleOpen = (e): void => {
         e.nativeEvent.preventDefault();
 
         if (!this.props.editable) {
-            return false;
+            return;
         }
 
         this.setState(
@@ -110,8 +138,8 @@ export default class SelectInput extends Input {
         );
     };
 
-    handle_bodyClick = (e) => {
-        if (!this.selectContainer.current.contains(e.target) && this.state.isFocused) {
+    handle_bodyClick = (e): void => {
+        if (this.selectContainer.current && !this.selectContainer.current.contains(e.target) && this.state.isFocused) {
             this.setState({
                 isFocused: false,
                 searchTerms: ''
@@ -123,13 +151,13 @@ export default class SelectInput extends Input {
         }
     };
 
-    handle_keyup = (e) => {
+    handle_keyup = (e): void => {
         if (!this.state.isFocused) {
-            return false;
+            return;
         }
 
         if ([13, 38, 40].indexOf(e.keyCode) < 0) {
-            return false;
+            return;
         }
 
         let options = this.props.options.filter((x) => x.name.toLowerCase().indexOf(this.state.searchTerms.toLowerCase()) >= 0),
@@ -163,7 +191,7 @@ export default class SelectInput extends Input {
                 break;
 
             default:
-                return false;
+                return;
         }
 
         this.handle_change(options[currentIndex].id, options[currentIndex].name, e, blur);
@@ -250,7 +278,7 @@ export default class SelectInput extends Input {
             <li
                 className={'select_option ' + (data.id === this.state.value && data.id !== 'null' ? '_is-active' : '')}
                 key={i}
-                tabIndex="-1"
+                tabIndex={-1}
                 onClick={this.handle_change.bind(this, data.id, data.name)}
                 title={data.title || data.name}
             >
@@ -329,34 +357,3 @@ export default class SelectInput extends Input {
         );
     }
 }
-
-const defaultProps = {
-    id: null,
-    name: 'selectname',
-    classes: '',
-    label: 'Choose an option...',
-
-    value: 'null',
-    defaults: [{ name: '-', id: 'null' }],
-    options: [{ name: 'Option 1', id: '1' }, { name: 'Option 2', id: '2' }], // title is optional too. { id:'', name:'', title:''}
-
-    icon: 'icon-ellipsis',
-
-    mapValue: 'id',
-    mapName: null,
-
-    validateOnChange: false,
-    resizeOptionsHeight: false,
-
-    searchable: false,
-    editable: true,
-
-    onChange: null,
-
-    showErrors: true,
-    controllable: false,
-    searchPlaceholder: null
-};
-
-let props = Object.assign({}, Input.defaultProps);
-SelectInput.defaultProps = Object.assign(props, defaultProps);

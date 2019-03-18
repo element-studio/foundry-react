@@ -3,10 +3,10 @@ import Pagination from 'react-js-pagination';
 
 import moment from 'moment';
 
-import Search from '@core/inputs/SearchInput.js';
-import ReactTableAction from '@core/table/components/TableAction.js';
+import Search from '../inputs/SearchInput.js';
+import ReactTableAction from './components/TableAction.js';
 import ReactElementToString from 'react-element-to-string';
-import { stripHtml } from '@utils/tools.js';
+import { stripHtml } from '../../utils/tools.js';
 
 export default class ReactTable extends React.Component {
     constructor(props) {

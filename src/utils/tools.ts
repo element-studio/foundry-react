@@ -13,6 +13,15 @@
  * Data & form processing
  */
 
+declare global {
+    interface String {
+        capitalizeFirstLetter(): string;
+    }
+    interface Array<T> {
+        isArray(obj: object): boolean;
+    }
+}
+
 // Serialize the contents of a form ready for POST
 export function serialize(form, excludeNulls = true, excludeEmpty = true, excludeNullStrings = false) {
     let field,
@@ -71,7 +80,7 @@ export function serialize(form, excludeNulls = true, excludeEmpty = true, exclud
 }
 
 export function serializeObj(obj, prefix) {
-    let str = [];
+    let str: string[] = [];
     for (let p in obj) {
         if (obj.hasOwnProperty(p)) {
             let k = prefix ? prefix + '[' + p + ']' : p,
@@ -118,7 +127,7 @@ export function isNumeric(value) {
 }
 export let formatNumberFixedTwo = function(data) {
     try {
-        let datatest = parseFloat(data).toFixed(2);
+        let datatest = parseFloat(parseFloat(data).toFixed(2));
         if (!isNaN(datatest)) {
             data = datatest;
         }
@@ -250,7 +259,7 @@ export const moneyThouSeparator = (val) => {
 
 /**  only implement if no native implementation is available */
 if (typeof Array.isArray === 'undefined') {
-    Array.isArray = function(obj) {
+    Array.prototype.isArray = function(obj) {
         return Object.prototype.toString.call(obj) === '[object Array]';
     };
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import Validator from 'validator'; // We've added a custom isRequired custom validator
 
-import * as tools from '@utils/tools.js';
+import * as tools from '../../utils/tools.js';
 /**
  * Server validations can get passed into this validation group
  *
@@ -22,7 +22,22 @@ import * as tools from '@utils/tools.js';
  *  - isConfirm:name_of_input -- this is to ensure that this is the same value as the input stated.
  */
 
-export default class ReactForm extends React.Component {
+export default class ReactForm extends React.Component<any, any> {
+    static defaultProps = {
+        id: '',
+        action: '/',
+        method: 'POST',
+        classes: '',
+        submitCallback: null,
+        beforeSubmit: function(data) {
+            return data;
+        },
+        nonAjaxPost: false,
+        encType: null
+    };
+
+    public inputs = {};
+
     constructor(props) {
         super(props);
 
@@ -32,8 +47,6 @@ export default class ReactForm extends React.Component {
             isValidating: false,
             serverErrors: {}
         };
-
-        this.inputs = {};
     }
 
     componentWillMount() {
@@ -61,7 +74,7 @@ export default class ReactForm extends React.Component {
 
                     if (child.props.reactInput) {
                         // this is in case the children don't get touched then we can pass the react form attach through components manually.
-                        let props = {
+                        let props: any = {
                             attachToValidationGroup: this.attachToValidationGroup,
                             detachFromValidationGroup: this.detachFromValidationGroup,
                             validate: this.validate,
@@ -93,65 +106,67 @@ export default class ReactForm extends React.Component {
 
     validate = (component) => {
         let isValid = true,
-            failedValidations = [];
+            failedValidations: string[] = [];
 
         if (component.props.validations) {
             // We split on comma to iterate the list of validation rules
-            component.props.validations.split(',').forEach((validation) => {
-                const value = component.state.value || component.state.value === 0 ? component.state.value : '';
+            component.props.validations.split(',').forEach(
+                (validation): void => {
+                    const value = component.state.value || component.state.value === 0 ? component.state.value : '';
 
-                if (!validation) {
-                    return false;
-                }
-                // By splitting on ":"" we get an array of arguments that we pass
-                // to the validator. ex.: isLength:5 -> ['isLength', '5']
-                let args = validation.split(':');
-
-                // We remove the top item and are left with the method to
-                // call the validator with ['isLength', '5'] -> 'isLength'
-                let validateMethod = args.shift();
-
-                // We use JSON.parse to convert the string values passed to the
-                // correct type. Ex. 'isLength:1' will make '1' actually a number
-                try {
-                    args = args.map(function(arg) {
-                        return JSON.parse(arg);
-                    });
-                } catch (e) {
-                    //
-                }
-
-                // Custom validate method
-                if (validateMethod === 'isRequired') {
-                    if (Validator['isEmpty'].apply(Validator, [value.toString()]) || value.toString() === 'null') {
-                        isValid = false;
-
-                        failedValidations.push('isRequired');
+                    if (!validation) {
+                        return;
                     }
-                    // So the next line of code is actually:
-                    // validator.isLength('valueFromInput', 5)
-                } else if (validateMethod === 'isMinLength') {
-                    if (Validator['isLength'].apply(Validator, [value.toString()].concat({ max: args[0] - 1 }))) {
-                        isValid = false;
+                    // By splitting on ":"" we get an array of arguments that we pass
+                    // to the validator. ex.: isLength:5 -> ['isLength', '5']
+                    let args = validation.split(':');
 
-                        failedValidations.push('isMinLength');
+                    // We remove the top item and are left with the method to
+                    // call the validator with ['isLength', '5'] -> 'isLength'
+                    let validateMethod = args.shift();
+
+                    // We use JSON.parse to convert the string values passed to the
+                    // correct type. Ex. 'isLength:1' will make '1' actually a number
+                    try {
+                        args = args.map(function(arg) {
+                            return JSON.parse(arg);
+                        });
+                    } catch (e) {
+                        //
                     }
-                } else if (validateMethod == 'isConfirm') {
-                    if (typeof this.inputs[args] !== 'undefined') {
-                        if (value.toString() !== this.inputs[args].state.value) {
+
+                    // Custom validate method
+                    if (validateMethod === 'isRequired') {
+                        if (Validator['isEmpty'].apply(Validator, [value.toString()]) || value.toString() === 'null') {
                             isValid = false;
-                            failedValidations.push('isConfirm');
+
+                            failedValidations.push('isRequired');
                         }
+                        // So the next line of code is actually:
+                        // validator.isLength('valueFromInput', 5)
+                    } else if (validateMethod === 'isMinLength') {
+                        if (Validator['isLength'].apply(Validator, [value.toString()].concat({ max: args[0] - 1 }))) {
+                            isValid = false;
+
+                            failedValidations.push('isMinLength');
+                        }
+                    } else if (validateMethod == 'isConfirm') {
+                        if (typeof this.inputs[args] !== 'undefined') {
+                            if (value.toString() !== this.inputs[args].state.value) {
+                                isValid = false;
+                                failedValidations.push('isConfirm');
+                            }
+                        }
+
+                        // We then merge two arrays, ending up with the value
+                        // to pass first, then options, if any. ['valueFromInput', 5]
+                    } else if (!Validator[validateMethod].apply(Validator, [value.toString()].concat(args))) {
+                        isValid = false;
+
+                        failedValidations.push(validateMethod);
                     }
-
-                    // We then merge two arrays, ending up with the value
-                    // to pass first, then options, if any. ['valueFromInput', 5]
-                } else if (!Validator[validateMethod].apply(Validator, [value.toString()].concat(args))) {
-                    isValid = false;
-
-                    failedValidations.push(validateMethod);
                 }
-            });
+            );
         }
 
         let serverErrors = null;
@@ -181,7 +196,7 @@ export default class ReactForm extends React.Component {
         return isValid;
     };
 
-    validateInputs = (names) => {
+    validateInputs = (names): boolean => {
         if (typeof names === 'undefined' || names.length < 1) {
             return true;
         }
@@ -202,7 +217,7 @@ export default class ReactForm extends React.Component {
         return allIsValid;
     };
 
-    validateAllInputs = () => {
+    validateAllInputs = (): boolean => {
         let that = this;
         let inputs = this.inputs;
 
@@ -220,7 +235,7 @@ export default class ReactForm extends React.Component {
         return allIsValid;
     };
 
-    validateForm = () => {
+    validateForm = (): void => {
         // We set allIsValid to true and flip it if we find any
         // invalid input components
         let allIsValid = true;
@@ -230,7 +245,7 @@ export default class ReactForm extends React.Component {
         let inputs = this.inputs;
 
         if (!inputs) {
-            return false;
+            return;
         }
 
         Object.keys(inputs).forEach((name) => {
@@ -306,13 +321,13 @@ export default class ReactForm extends React.Component {
                 {
                     serverErrors: null
                 },
-                () => {
+                (): void => {
                     let isValid = this.validateAllInputs(); // Checks front end validation
 
                     this.validateForm();
 
                     if (this.state.isSubmitting || !isValid) {
-                        return false;
+                        return;
                     }
 
                     this.setState(
@@ -396,16 +411,3 @@ export default class ReactForm extends React.Component {
         );
     }
 }
-
-ReactForm.defaultProps = {
-    id: '',
-    action: '/',
-    method: 'POST',
-    classes: '',
-    submitCallback: null,
-    beforeSubmit: function(data) {
-        return data;
-    },
-    nonAjaxPost: false,
-    encType: null
-};

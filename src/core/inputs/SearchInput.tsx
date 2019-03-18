@@ -1,15 +1,26 @@
 import * as React from 'react';
 
-export default class SearchInput extends React.Component {
+export default class SearchInput extends React.Component<any, any> {
+    static defaultProps = {
+        className: '',
+        id: 'search-id',
+        style: 'block',
+        placeholder: 'Search for things',
+        value: '',
+        onChange: null,
+        onClear: null,
+        delay: 0
+    };
+
+    public timeOut?: NodeJS.Timer = undefined;
+    public selectRef: React.RefObject<HTMLInputElement> = React.createRef();
+
     constructor(props) {
         super(props);
 
         this.state = {
             searchValue: ''
         };
-
-        this.timeOut = null;
-        this.selectRef = React.createRef();
     }
 
     componentDidMount() {
@@ -26,7 +37,9 @@ export default class SearchInput extends React.Component {
         });
 
         if (this.props.delay > 0) {
-            clearTimeout(this.timeOut);
+            if (this.timeOut) {
+                clearTimeout(this.timeOut);
+            }
 
             this.timeOut = setTimeout(() => {
                 if (typeof this.props.onChange === 'function') {
@@ -49,7 +62,10 @@ export default class SearchInput extends React.Component {
     };
 
     focus = () => {
-        this.refs.selectRef.current.focus();
+        if (!this.selectRef.current) {
+            return;
+        }
+        this.selectRef.current.focus();
     };
 
     render() {
@@ -79,7 +95,7 @@ export default class SearchInput extends React.Component {
                             viewBox="0 0 32 32"
                             width="16"
                             height="16"
-                            tabIndex="0"
+                            tabIndex={0}
                             onClick={this.handle_clear}
                         >
                             <use xlinkHref="#icon-circle-cross" />
@@ -90,14 +106,3 @@ export default class SearchInput extends React.Component {
         );
     }
 }
-
-SearchInput.defaultProps = {
-    className: '',
-    id: 'search-id',
-    style: 'block',
-    placeholder: 'Search for things',
-    value: '',
-    onChange: null,
-    onClear: null,
-    delay: 0
-};

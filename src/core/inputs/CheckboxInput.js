@@ -1,13 +1,7 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-
 import Input from '../reactform/containers/FormInputContainer.js';
 
 export default class CheckboxInput extends Input {
-    static propTypes = {
-        name: PropTypes.string.isRequired
-    };
-
     state = {
         checked: false,
         serverErrors: null, // No initial server errors
@@ -77,7 +71,6 @@ export default class CheckboxInput extends Input {
             <fieldset className="field_set">
                 <div className="field_wrapper">
                     <input
-                        ref="checkbox"
                         type="checkbox"
                         id={this.props.id || this.props.name}
                         name={this.props.name}

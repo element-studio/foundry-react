@@ -81,10 +81,14 @@ export default class TextInput extends Input {
                     this.props.validate(this, true);
                 }
                 if (typeof this.props.onChange === 'function') {
-                    this.props.onChange({ name: e.target.name, value: e.target.value });
+                    this.props.onChange({ name: this.props.name, value });
                 }
             }
         );
+    };
+
+    handle_clear = () => {
+        this.setValue(undefined);
     };
 
     /*
@@ -104,8 +108,8 @@ export default class TextInput extends Input {
      */
     render() {
         return (
-            <fieldset className={'field_set'}>
-                <div className={'field_wrapper'}>
+            <fieldset className={'field_set'} style={this.props.hidden ? { display: 'none' } : {}}>
+                <div className={'field_wrapper date-picker date-picker--has-clear'}>
                     {this.props.label ? (
                         <label htmlFor={this.props.name} className="text_input_label type-label" data-label={this.props.label}>
                             {this.props.label}
@@ -118,12 +122,23 @@ export default class TextInput extends Input {
                         selected={this.state.value}
                         onChange={this.setValue}
                         placeholderText={this.props.placeholder}
-                        showTimeSelect
+                        showTimeSelect={this.props.showTimeSelect}
                         timeFormat="HH:mm"
+                        selectsStart={this.props.selectsStart}
+                        selectsEnd={this.props.selectsEnd}
+                        minDate={this.props.minDate}
+                        maxDate={this.props.maxDate}
                         timeIntervals={1}
-                        dateFormat="LLL"
+                        dateFormat={this.props.dateFormat}
                         timeCaption="time"
+                        autoComplete="off"
                     />
+
+                    {this.state.value && (
+                        <svg className="date-picker__clear" viewBox="0 0 32 32" width="16" height="16" tabIndex="0" onClick={this.handle_clear}>
+                            <use xlinkHref="#icon-circle-cross" />
+                        </svg>
+                    )}
                 </div>
                 {this.printErrors()}
             </fieldset>
@@ -147,6 +162,12 @@ const defaultProps = {
     max: null,
     step: null,
     placeholder: null,
+    dateFormat: 'LLL',
+    hidden: false,
+    selectsStart: false,
+    selectsEnd: false,
+    minDate: null,
+    maxDate: null,
 
     required: false,
     readOnly: false,
@@ -159,7 +180,8 @@ const defaultProps = {
 
     selectTextOnEntry: false, //if set to true then the text in the box is automatically selected.
 
-    controllable: false
+    controllable: false,
+    showTimeSelect: true
 };
 
 const props = Object.assign({}, Input.defaultProps);
