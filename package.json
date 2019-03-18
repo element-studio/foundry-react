@@ -13,14 +13,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/darylthornhill/foundry-react.git"
+        "url": "git+https://github.com/element-studio/foundry-react.git"
     },
     "author": "",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/darylthornhill/foundry-react/issues"
+        "url": "https://github.com/element-studio/foundry-react/issues"
     },
-    "homepage": "https://github.com/darylthornhill/foundry-react#readme",
+    "homepage": "https://github.com/element-studio/foundry-react#readme",
     "devDependencies": {
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.3.4",
