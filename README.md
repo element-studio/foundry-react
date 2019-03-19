@@ -6,7 +6,7 @@ This consists of Foundry React Core (components) and utilities (some useful js h
 
 ## Getting Started
 
-Setting up an initial repository with a readme file. \*_This project is not really ready for use._
+\*_This project is not really ready for use._
 
 ### Installing
 
