@@ -39,7 +39,7 @@ npm i && npm start # Installs dependencies and load up story book
 ```
 
 ```bash
-npm run build-link # Builds the JS files and links them in your global directory for use in projects.
+npm run build-link # Builds the JS files and links them in your global directory for use in projects. Then use `npm link foundry-react` in your actual project to start using the local version for testing in situ
 ```
 
 ```bash
