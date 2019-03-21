@@ -5,7 +5,7 @@ import * as tools from '../../utils/tools.js';
 import Input from '../reactform/containers/FormInputContainer';
 import Search from '../inputs/SearchInput.js';
 
-export default class SelectInput extends Input {
+export default class SelectInput<props = {}, state = {}, SS = {}> extends Input {
     static defaultProps = Object.assign(Object.assign({}, Input.defaultProps), {
         id: null,
         name: 'selectname',

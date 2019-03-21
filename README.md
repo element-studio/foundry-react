@@ -24,7 +24,7 @@ The code is compiled to es6+ so if you require es5 then please use a compiler
 
 ## Documentation
 
-There are a few components in here that are useful, however the documentation isnt quite ready.
+There are a few components in here that are useful, however the documentation isn't quite ready.
 
 For now just any pals that want to use this right now will have to dig through the code to see how it works.
 

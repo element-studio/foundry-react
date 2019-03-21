@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default class Input extends React.Component<any, any> {
+export default class Input<P = {}, S = {}, SS = {}> extends React.Component<any, any> {
     static defaultProps = {
         validations: null, // e.g 'isEmail' see https://www.npmjs.com/package/validator seperate by ,
         defaultValidationMessages: {

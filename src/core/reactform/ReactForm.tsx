@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import Validator from 'validator'; // We've added a custom isRequired custom validator
 
 import * as tools from '../../utils/tools.js';
@@ -33,10 +32,12 @@ export default class ReactForm extends React.Component<any, any> {
             return data;
         },
         nonAjaxPost: false,
-        encType: null
+        encType: null,
+        axios: null
     };
 
     public inputs = {};
+    public reactFormRef: React.RefObject<HTMLFormElement> = React.createRef();
 
     constructor(props) {
         super(props);
@@ -271,7 +272,10 @@ export default class ReactForm extends React.Component<any, any> {
     };
 
     getFormData = () => {
-        let data = tools.serialize(this.refs.reactform);
+        let data = {};
+        if (this.reactFormRef.current) {
+            data = tools.serialize(this.reactFormRef.current);
+        }
 
         return this.sanitizeNullStrings(data);
     };
@@ -335,11 +339,12 @@ export default class ReactForm extends React.Component<any, any> {
                             isSubmitting: true
                         },
                         () => {
-                            axios({
-                                method: this.props.method,
-                                url: this.props.action,
-                                data: data
-                            })
+                            this.props
+                                .axios({
+                                    method: this.props.method,
+                                    url: this.props.action,
+                                    data: data
+                                })
                                 .then(this.checkServerErrors)
                                 .catch(() => {
                                     this.setState({
@@ -398,7 +403,7 @@ export default class ReactForm extends React.Component<any, any> {
     render() {
         return (
             <form
-                ref="reactform"
+                ref={this.reactFormRef}
                 id={this.props.id}
                 action={this.props.action}
                 method={this.props.method}

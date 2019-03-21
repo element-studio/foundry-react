@@ -15,7 +15,7 @@ export interface IButtonProps {
     isDisabledLabel?: string;
     allowDefault?: boolean;
 
-    label?: string;
+    label?: string | JSX.Element;
     type?: string;
     href?: string;
     target?: string;

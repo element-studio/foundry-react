@@ -23,9 +23,9 @@ declare global {
 }
 
 // Serialize the contents of a form ready for POST
-export function serialize(form, excludeNulls = true, excludeEmpty = true, excludeNullStrings = false) {
+export function serialize(form, excludeNulls = true, excludeEmpty = true, excludeNullStrings = false): Object {
     let field,
-        s = {};
+        s: Object = {};
     if (typeof form == 'object' && form.nodeName == 'FORM') {
         let len = form.elements.length;
 
