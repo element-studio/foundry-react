@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import Validator from 'validator';
 
 /**
@@ -20,9 +19,12 @@ import Validator from 'validator';
  *  - isConfirm:name_of_input -- this is to ensure that this is the same value as the input stated.
  */
 
-import * as util from '@utils/tools.js';
-
 export default class ValidationGroup extends React.Component {
+    static defaultProps = {
+        id: '',
+        showError: false
+    };
+
     constructor(props) {
         super(props);
 
@@ -133,7 +135,7 @@ export default class ValidationGroup extends React.Component {
                 // We use JSON.parse to convert the string values passed to the
                 // correct type. Ex. 'isLength:1' will make '1' actually a number
                 try {
-                    args = args.map(function (arg) {
+                    args = args.map(function(arg) {
                         return JSON.parse(arg);
                     });
                 } catch (e) {}
@@ -248,7 +250,9 @@ export default class ValidationGroup extends React.Component {
             <div ref="validationGroup" id={this.props.id}>
                 {this.registerInputs(this.props.children)}
                 {!this.state.isValid && this.props.showError ? (
-                    <div className="form-error-message island-small">There are some errors that need to be resolved in this form. Please ensure that everything is correctly inputted.</div>
+                    <div className="form-error-message island-small">
+                        There are some errors that need to be resolved in this form. Please ensure that everything is correctly inputted.
+                    </div>
                 ) : (
                     ''
                 )}
@@ -256,8 +260,3 @@ export default class ValidationGroup extends React.Component {
         );
     }
 }
-
-ValidationGroup.defaultProps = {
-    id: '',
-    showError: false
-};
