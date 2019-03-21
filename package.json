@@ -1,0 +1,54 @@
+{
+    "name": "foundry-react",
+    "version": "0.0.1",
+    "description": "Element studio's react reusable components and strucutre",
+    "scripts": {
+        "start": "npm run storybook",
+        "storybook": "start-storybook -p 9001 -c .storybook",
+        "build-link": "npm run build && cd ./dist && npm link",
+        "build-publish": "npm run build && npm publish",
+        "build-js": "babel src --out-dir ./dist && babel src --out-dir ./dist --extensions '.tsx','.ts' && tsc --declaration --emitDeclarationOnly",
+        "build": "rm -rf ./dist && npm run build-js && npm run copy && cd ./dist && npm install --only=prod",
+        "copy": "cp package.json ./dist && cp LICENSE ./dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/element-studio/foundry-react.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/element-studio/foundry-react/issues"
+    },
+    "homepage": "https://github.com/element-studio/foundry-react#readme",
+    "devDependencies": {
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.3.4",
+        "@babel/plugin-proposal-class-properties": "^7.3.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+        "@babel/plugin-transform-typescript": "^7.3.2",
+        "@babel/preset-env": "^7.3.4",
+        "@babel/preset-react": "^7.0.0",
+        "@babel/preset-typescript": "^7.3.3",
+        "@storybook/addon-info": "^4.1.13",
+        "@storybook/react": "^4.1.13",
+        "@types/jest": "^24.0.9",
+        "@types/storybook__react": "^4.0.1",
+        "awesome-typescript-loader": "^5.2.1",
+        "babel-loader": "^8.0.5",
+        "babel-plugin-module-resolver": "^3.2.0",
+        "jest": "^24.1.0",
+        "react-docgen-typescript-loader": "^3.0.1",
+        "react-docgen-typescript-webpack-plugin": "^1.1.0",
+        "ts-jest": "^24.0.0",
+        "typescript": "^3.3.3333"
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.8.3",
+        "react-addons-css-transition-group": "^15.6.2",
+        "react-dom": "^16.8.3",
+        "validator": "^10.11.0"
+    }
+}

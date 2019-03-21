@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "dist",
+        "module": "esnext",
+        "target": "ES6",
+        "lib": ["es2017", "dom"],
+        "sourceMap": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "rootDirs": ["src", "stories"],
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": false,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "noUnusedParameters": false,
+        "paths": {
+            // Remember to add any of these to the webpack config
+            "@core/*": ["src/core/*"],
+            "@utils/*": ["src/utils/*"]
+        }
+    },
+
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", "scripts"]
+}
