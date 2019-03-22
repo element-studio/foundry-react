@@ -36,6 +36,10 @@ export default class SingleClickButton extends React.Component<
    * @prefix handle_
    */
   handle_click = (e) => {
+    if (this.state.disabled) {
+      return;
+    }
+
     this.setState({
       disabled: true
     });
@@ -44,7 +48,7 @@ export default class SingleClickButton extends React.Component<
       setTimeout(() => {
         this.setState({
           disabled: false
-        })
+        });
       }, this.props.delay);
     }
 
@@ -60,7 +64,6 @@ export default class SingleClickButton extends React.Component<
         type={this.props.type}
         title={this.props.value}
         className={this.props.className}
-        disabled={this.state.disabled}
         onClick={this.handle_click}
       >
         {!this.state.disabled ? this.props.value : 'Working...'}
