@@ -137,6 +137,7 @@ export default class TextInput extends Input {
               dateFormat={this.props.dateFormat}
               timeCaption="time"
               autoComplete="off"
+              highlightDates={this.props.highlightDates}
             />
 
             {this.state.value && (
