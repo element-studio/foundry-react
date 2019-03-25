@@ -170,7 +170,7 @@ export default class ReactTable extends React.Component {
                     let aValue = a[headingIndex];
                     let bValue = b[headingIndex];
 
-                    if (typeof aValue === 'string') {
+                    if (typeof aValue === 'string' && typeof bValue === 'string') {
                         if (this.isValidDate(aValue)) {
                             return this.sortDate(aValue, bValue);
                         }
