@@ -46,6 +46,8 @@ npm run build-link # Builds the JS files and links them in your global directory
 npm run build #build the JS files
 ```
 
+> **Important for when publish. use npm run build-publish, so that the build files get published first.**
+
 # License
 
 MIT
