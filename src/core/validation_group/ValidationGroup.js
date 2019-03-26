@@ -25,6 +25,8 @@ export default class ValidationGroup extends React.Component {
         showError: false
     };
 
+    validationGroupRef = React.createRef();
+
     constructor(props) {
         super(props);
 
@@ -247,7 +249,7 @@ export default class ValidationGroup extends React.Component {
 
     render() {
         return (
-            <div ref="validationGroup" id={this.props.id}>
+            <div ref={this.validationGroupRef} id={this.props.id}>
                 {this.registerInputs(this.props.children)}
                 {!this.state.isValid && this.props.showError ? (
                     <div className="form-error-message island-small">
