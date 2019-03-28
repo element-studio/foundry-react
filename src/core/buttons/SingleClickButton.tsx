@@ -6,6 +6,8 @@ export interface ISingleClickButtonProps {
     value?: string;
     onClick?: Function;
     delay?: number;
+    disabled?: boolean;
+    disabledText?: string;
 }
 
 export interface ISingleClickButtonState {
@@ -22,7 +24,8 @@ export default class SingleClickButton extends React.Component<
         className: 'btn',
         value: 'Press me!',
         onClick: null,
-        type: 'submit'
+        type: 'submit',
+        disabledText: 'Working...'
     };
 
     constructor(props) {
@@ -72,8 +75,11 @@ export default class SingleClickButton extends React.Component<
                 title={this.props.value}
                 className={this.props.className}
                 onClick={this.handle_click}
+                disabled={this.props.disabled}
             >
-                {!this.state.disabled ? this.props.value : 'Working...'}
+                {this.props.disabled || this.state.disabled
+                    ? this.props.disabledText
+                    : this.props.value}
             </button>
         );
     }
