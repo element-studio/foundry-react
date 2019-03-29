@@ -62,7 +62,9 @@ export default class MulticheckInput extends React.Component {
         let optsToRender = [];
 
         //with search terms
-        opts = this.props.options.filter((x) => x.name.toLowerCase().indexOf(this.state.searchTerms.toLowerCase()) >= 0);
+        opts = this.props.options.filter(
+            (x) => x.name.toLowerCase().indexOf(this.state.searchTerms.toLowerCase()) >= 0
+        );
 
         //show only active
         if (this.state.activeOnly) {
@@ -103,28 +105,27 @@ export default class MulticheckInput extends React.Component {
         return (
             <div className={'field_set ' + this.props.className}>
                 {this.props.label ? (
-                    <span className="type-label">
+                    <span className="text_input_label type-label">
                         {this.props.label}
                         <br />
                     </span>
                 ) : null}
-                {this.props.searchable ? (
-                    <SearchInput
-                        style="pill"
-                        onChange={this.handle_search}
-                        onClear={this.handle_searchClear}
-                        value={this.state.searchTerms}
-                        placeholder={this.props.searchPlaceholder}
-                        delay={150}
-                    />
-                ) : null}
-
-                {(() => {
-                    if (this.printOptions().length) {
-                        return this.printOptions();
-                    }
-                    return <p>There are no results.</p>;
-                })()}
+                <SearchInput
+                    style="pill"
+                    onChange={this.handle_search}
+                    onClear={this.handle_searchClear}
+                    value={this.state.searchTerms}
+                    placeholder={this.props.searchPlaceholder}
+                    delay={150}
+                />
+                <div className={this.props.className + '_scroll'}>
+                    {(() => {
+                        if (this.printOptions().length) {
+                            return this.printOptions();
+                        }
+                        return <p>There are no results.</p>;
+                    })()}
+                </div>
             </div>
         );
     }
@@ -140,5 +141,6 @@ MulticheckInput.defaultProps = {
     searchPlaceholder: 'Search for things...',
     label: null,
     onChange: null,
-    limit: 0
+    limit: 0,
+    searchInside: true
 };
