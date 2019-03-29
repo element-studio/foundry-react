@@ -1,6 +1,6 @@
 {
     "name": "foundry-react",
-    "version": "0.0.7",
+    "version": "0.0.6",
     "description": "Element studio's react reusable components and strucutre",
     "scripts": {
         "start": "npm run storybook",
