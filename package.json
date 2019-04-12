@@ -49,6 +49,7 @@
         "react": "^16.8.3",
         "react-addons-css-transition-group": "^15.6.2",
         "react-dom": "^16.8.3",
+        "react-element-to-string": "^1.0.2",
         "validator": "^10.11.0"
     }
 }
