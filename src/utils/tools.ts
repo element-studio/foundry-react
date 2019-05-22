@@ -52,7 +52,8 @@ export function serialize(form, excludeNulls = true, excludeEmpty = true, exclud
                     // Serialize file inputs here
                     break;
 
-                case 'checkbox':
+                    case 'radio':
+                    case 'checkbox':
                     if (field.checked) {
                         let fieldName = field.name;
 
