@@ -300,6 +300,7 @@ export default class SelectInput<props = {}, state = {}, SS = {}> extends Input 
                 <div className="field_wrapper">
                     <div className="select_wrapper">
                         <select
+                            data-testid={this.props['data-testid']}
                             id={this.props.name}
                             name={this.props.name}
                             value={this.state.value}
