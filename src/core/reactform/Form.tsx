@@ -9,6 +9,7 @@ import ValidationGroup from '../validation_group/ValidationGroup';
 
 export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
     children?: React.ReactNode;
+    forwardedRef?: React.RefObject<HTMLFormElement>;
 
     onSubmit: (formData: any) => void;
 }
@@ -39,10 +40,10 @@ class Form extends React.Component<FormProps, {}> {
      * render method, primary template method..
      */
     public render(): JSX.Element {
-        const { children } = this.props;
+        const { forwardedRef, children, ...props } = this.props;
 
         return (
-            <form {...this.props} onSubmit={this.handle_submit}>
+            <form ref={forwardedRef} {...props} onSubmit={this.handle_submit}>
                 <ValidationGroup ref={this.validationGroupRef}>{children}</ValidationGroup>
             </form>
         );

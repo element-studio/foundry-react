@@ -4,11 +4,34 @@ import Pagination from 'react-js-pagination';
 import moment from 'moment';
 
 import Search from '../inputs/SearchInput.js';
-import ReactTableAction from './components/TableAction.js';
 import ReactElementToString from 'react-element-to-string';
 import { stripHtml } from '../../utils/tools.js';
 
-export default class ReactTable extends React.Component {
+export default class ReactTable extends React.Component<any, any> {
+    static defaultProps = {
+        emptyMessage: 'There are currently no rows.',
+        emptyClassName: '',
+
+        pagination: false,
+        rowsPerPage: 10,
+
+        searchable: false,
+        sortable: true,
+        sortablefrontEnd: true,
+        sorted_heading: null,
+        sorted_heading_direction: 'asc',
+        sortableHeadings: null, // ['firstname','lastname'] //these are used to map the readable headings back to the data fields.
+        onSortChange: null,
+
+        className: 'table-default',
+
+        headings: [],
+        data: [],
+
+        formatData: {}, // 'heading' : (data)=>{return data;}
+        dateSortFormat: 'DD/MM/YYYY'
+    };
+
     constructor(props) {
         super(props);
 
@@ -36,7 +59,7 @@ export default class ReactTable extends React.Component {
     componentWillReceiveProps(nextProps) {
         const maxPages = nextProps.data ? this.getMaxPages(nextProps.data) : null;
 
-        if (this.state.activePage > maxPages) {
+        if (maxPages && this.state.activePage > maxPages) {
             this.setState({
                 activePage: maxPages || 1
             });
@@ -68,9 +91,9 @@ export default class ReactTable extends React.Component {
         });
     };
 
-    handle_sortOrder = (heading, index) => {
+    handle_sortOrder = (heading, index): void => {
         if (!this.props.sortable) {
-            return false;
+            return;
         }
 
         const currentSort = this.state.sortOrder;
@@ -235,7 +258,7 @@ export default class ReactTable extends React.Component {
     };
 
     printClasses() {
-        let classes = [];
+        let classes: string[] = [];
 
         if (this.props.sortable) {
             classes.push(' _is-sortable');
@@ -249,7 +272,7 @@ export default class ReactTable extends React.Component {
     }
 
     printHeadings = () => {
-        let headings = [];
+        let headings: JSX.Element[] = [];
         let propHeadings = this.props.headings;
 
         for (let i = 0; i < propHeadings.length; i++) {
@@ -282,7 +305,7 @@ export default class ReactTable extends React.Component {
             return null;
         }
 
-        let rows = [];
+        let rows: JSX.Element[] = [];
 
         let propRows = this.props.pagination ? this.paginatedData(data) : data;
 
@@ -294,20 +317,9 @@ export default class ReactTable extends React.Component {
     };
 
     printCells = (data) => {
-        let cells = [];
+        let cells: JSX.Element[] = [];
         for (let key in data) {
-            let actions = false;
-
             let celldata = data[key];
-
-            if (celldata && typeof celldata === 'object') {
-                const obj = celldata;
-                if (typeof obj.type !== 'undefined') {
-                    if (obj.type == ReactTableAction) {
-                        actions = true;
-                    }
-                }
-            }
 
             if (this.props.formatData) {
                 if (typeof this.props.formatData[this.props.headings[key]] === 'function') {
@@ -318,11 +330,8 @@ export default class ReactTable extends React.Component {
             if (celldata == null) {
                 continue;
             }
-            cells.push(
-                <td key={key} className={actions ? 'td-actions' : ''}>
-                    {celldata}
-                </td>
-            );
+
+            cells.push(<td key={key}>{celldata}</td>);
         }
 
         return cells;
@@ -357,7 +366,7 @@ export default class ReactTable extends React.Component {
 
         return (
             <div className="table-wrapper">
-                {(() => {
+                {((): any => {
                     if (this.props.searchable) {
                         return (
                             <div className="search-table">
@@ -383,7 +392,7 @@ export default class ReactTable extends React.Component {
                     </table>
                 </div>
 
-                {(() => {
+                {((): any => {
                     if (!this.props.data.length) {
                         return (
                             <div className={'_is-empty _is-empty_message ' + this.props.emptyClassName}>
@@ -393,7 +402,7 @@ export default class ReactTable extends React.Component {
                     }
                 })()}
 
-                {(() => {
+                {((): any => {
                     if (this.props.pagination) {
                         return this.printPagination(data);
                     }
@@ -402,27 +411,3 @@ export default class ReactTable extends React.Component {
         );
     }
 }
-
-ReactTable.defaultProps = {
-    emptyMessage: 'There are currently no rows.',
-    emptyClassName: '',
-
-    pagination: false,
-    rowsPerPage: 10,
-
-    searchable: false,
-    sortable: true,
-    sortablefrontEnd: true,
-    sorted_heading: null,
-    sorted_heading_direction: 'asc',
-    sortableHeadings: null, // ['firstname','lastname'] //these are used to map the readable headings back to the data fields.
-    onSortChange: null,
-
-    className: 'table-default',
-
-    headings: [],
-    data: [],
-
-    formatData: {}, // 'heading' : (data)=>{return data;}
-    dateSortFormat: 'DD/MM/YYYY'
-};
