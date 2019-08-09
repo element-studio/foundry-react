@@ -22,7 +22,7 @@ interface FormData {
 type Callback = (formData: FormData, state: StateSchema) => void;
 
 const useForm = (formValues: FormData, validationSchema: ValidationStateSchema = {}, callback: Callback) => {
-    const formVals = useMemo(() => convertFormDataToSchema(formValues), []);
+    const formVals = useMemo(() => convertFormDataToSchema(formValues, validationSchema), []);
 
     const [state, setState] = useState(formVals);
     const [disable, setDisable] = useState(true);
@@ -48,33 +48,38 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchema).some(
             (key): boolean => {
-                const vs = validationSchema[key];
-                const validations = vs ? vs.validations : undefined;
-                const isInputFieldRequired = validations ? validations.indexOf('required') > -1 : false;
-                const stateValue = state[key].value; // state value
                 const stateError = state[key].error; // state error
 
-                return !!((isInputFieldRequired && !stateValue) || stateError);
+                return !!stateError;
             }
         );
 
         return hasErrorInState;
     }, [state, validationSchema]);
 
-    // Used to handle every changes in every input
-    const handleOnChange = useCallback(
+    const checkError = useCallback(
         (name, value) => {
-            setIsDirty(true);
-
             let error = '';
 
             const vs = validationSchema[name];
             const validations = vs ? vs.validations : undefined;
             if (vs && validations && validations.indexOf('required') > -1) {
-                if (!value) {
+                if (!value && value !== 0) {
                     error = vs.errorMessage || 'This field is required.';
                 }
             }
+
+            return error;
+        },
+        [validationSchema]
+    );
+
+    // Used to handle every changes in every input
+    const handleOnChange = useCallback(
+        (name, value) => {
+            setIsDirty(true);
+
+            const error = checkError(name, value);
 
             setState((prevState) => ({
                 ...prevState,
@@ -84,17 +89,39 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
         [validationSchema]
     );
 
+    const checkAllValid = useCallback(() => {
+        let valid = true;
+
+        let newState = { ...state };
+
+        Object.keys(validationSchema).forEach((key) => {
+            const name = key;
+            const value = state[key].value; // state value
+            const error = checkError(name, value);
+
+            if (error) {
+                valid = false;
+            }
+
+            newState = {
+                ...newState,
+                [name]: { value, error }
+            };
+        });
+
+        setState(() => newState);
+
+        return valid;
+    }, [state]);
+
     const handleOnSubmit = useCallback(
         (event) => {
             if (event.preventDefault) event.preventDefault();
-
-            // Make sure that validateState returns false
-            // Before calling the submit callback function
-            if (!validateState()) {
+            if (checkAllValid()) {
                 callback(serializeState(state), state);
             }
         },
-        [state]
+        [state, callback]
     );
 
     return { state, disable, handleOnChange, handleOnSubmit };
@@ -110,10 +137,14 @@ const serializeState = (state: StateSchema): FormData => {
     return formData;
 };
 
-const convertFormDataToSchema = (formData: FormData): StateSchema => {
+const convertFormDataToSchema = (formData: FormData, validationSchema: ValidationStateSchema): StateSchema => {
     const stateSchema = {};
 
     const flattenedFormData = flattenObject(formData);
+
+    Object.keys(validationSchema).forEach((key) => {
+        stateSchema[key] = { value: null, error: '' };
+    });
 
     Object.keys(flattenedFormData).forEach((key) => {
         stateSchema[key] = { value: flattenedFormData[key], error: '' };
