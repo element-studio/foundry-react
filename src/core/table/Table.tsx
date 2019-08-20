@@ -15,6 +15,7 @@ export default class ReactTable extends React.Component<any, any> {
         pagination: false,
         rowsPerPage: 10,
 
+        searchTerms: '',
         searchable: false,
         sortable: true,
         sortablefrontEnd: true,
@@ -48,6 +49,7 @@ export default class ReactTable extends React.Component<any, any> {
 
     componentDidMount() {
         this.setState({
+            searchTerms: this.props.searchTerms || '',
             sortOrder: {
                 heading: this.props.sorted_heading ? this.props.sorted_heading : null,
                 headingIndex: this.props.sorted_heading ? this.props.headings.indexOf(this.props.sorted_heading) : null,
