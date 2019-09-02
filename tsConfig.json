@@ -21,7 +21,6 @@
         "allowSyntheticDefaultImports": true,
         "noUnusedParameters": false,
         "paths": {
-            // Remember to add any of these to the webpack config
             "@core/*": ["src/core/*"],
             "@utils/*": ["src/utils/*"]
         }
