@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "dist",
+        "outDir": ".",
         "module": "esnext",
         "target": "ES6",
         "lib": ["es2017", "dom"],
@@ -28,5 +28,5 @@
     },
 
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "scripts"]
+    "exclude": ["node_modules", "hooks", "core", "utils", "scripts"]
 }

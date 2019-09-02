@@ -56,9 +56,16 @@ export default class SearchInput extends React.Component<any, any> {
             this.props.onClear();
         }
 
-        this.setState({
-            searchValue: ''
-        });
+        this.setState(
+            {
+                searchValue: ''
+            },
+            () => {
+                if (this.selectRef.current) {
+                    this.props.onChange({ target: this.selectRef.current });
+                }
+            }
+        );
     };
 
     focus = () => {
@@ -77,7 +84,7 @@ export default class SearchInput extends React.Component<any, any> {
                         type="search"
                         name={this.props.name}
                         id={this.props.name}
-                        className={' search_' + this.props.style + '-input'}
+                        className={`search_${this.props.style}-input ${this.state.searchValue ? '_has-value' : ''}`}
                         placeholder={this.props.placeholder}
                         onChange={this.handle_onChange}
                         value={this.state.searchValue}
