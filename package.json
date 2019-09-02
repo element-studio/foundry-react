@@ -1,14 +1,13 @@
 {
     "name": "foundry-react",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "description": "Element studio's react reusable components and strucutre",
     "scripts": {
         "start": "npm run storybook",
         "storybook": "start-storybook -p 9001 -c .storybook",
-        "build-link": "npm run build && cd ./ && npm link",
-        "build-publish": "npm run build && cd ./ && npm publish",
+        "build-link": "npm run build &&  npm link",
         "build-js": "babel src --out-dir ./ && babel src --out-dir ./ --extensions '.tsx','.ts' && tsc --declaration --emitDeclarationOnly",
-        "build": "npm run build-js && cd ./ && npm install --only=prod"
+        "build": "npm run build-js && npm install --only=prod"
     },
     "repository": {
         "type": "git",
