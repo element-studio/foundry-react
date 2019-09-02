@@ -4,6 +4,7 @@ node_js:
 
 before_deploy:
     - npm run test
+    - npm run build
 
 deploy:
     provider: npm
