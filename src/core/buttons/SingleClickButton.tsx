@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export interface ISingleClickButtonProps {
     className?: string;
-    type?: string;
+    type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
     value?: string;
     onClick?: Function;
     delay?: number;
@@ -14,10 +14,7 @@ export interface ISingleClickButtonState {
     disabled: boolean;
 }
 
-export default class SingleClickButton extends React.Component<
-    ISingleClickButtonProps,
-    ISingleClickButtonState
-> {
+export default class SingleClickButton extends React.Component<ISingleClickButtonProps, ISingleClickButtonState> {
     protected timeout?: number = undefined;
 
     static defaultProps = {
@@ -77,9 +74,7 @@ export default class SingleClickButton extends React.Component<
                 onClick={this.handle_click}
                 disabled={this.props.disabled}
             >
-                {this.props.disabled || this.state.disabled
-                    ? this.props.disabledText
-                    : this.props.value}
+                {this.props.disabled || this.state.disabled ? this.props.disabledText : this.props.value}
             </button>
         );
     }
