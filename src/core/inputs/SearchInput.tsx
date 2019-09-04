@@ -9,10 +9,11 @@ export default class SearchInput extends React.Component<any, any> {
         value: '',
         onChange: null,
         onClear: null,
-        delay: 0
+        delay: 0,
+        controllable: false
     };
 
-    public timeOut?: NodeJS.Timer = undefined;
+    public timeOut?: number = undefined;
     public selectRef: React.RefObject<HTMLInputElement> = React.createRef();
 
     constructor(props) {
@@ -29,6 +30,14 @@ export default class SearchInput extends React.Component<any, any> {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.props.value && this.props.controllable) {
+            this.setState({
+                searchValue: nextProps.value
+            });
+        }
+    }
+
     handle_onChange = (e) => {
         e.persist();
 
@@ -41,7 +50,7 @@ export default class SearchInput extends React.Component<any, any> {
                 clearTimeout(this.timeOut);
             }
 
-            this.timeOut = setTimeout(() => {
+            this.timeOut = window.setTimeout(() => {
                 if (typeof this.props.onChange === 'function') {
                     this.props.onChange(e);
                 }
