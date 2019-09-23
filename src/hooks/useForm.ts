@@ -26,6 +26,9 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     const [state, setState] = useState(formVals);
     const [isDirty, setIsDirty] = useState(false);
 
+    /**
+     * Validates an individual fields.
+     */
     const checkError = useCallback(
         (name, value) => {
             let error = '';
@@ -43,7 +46,9 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
         [validationSchema]
     );
 
-    // Used to handle every changes in every input
+    /**
+     * Change function that is attached to each change of a form input's value.
+     */
     const handleOnChange = useCallback(
         (name, value) => {
             setIsDirty(true);
@@ -58,6 +63,9 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
         [validationSchema]
     );
 
+    /**
+     * Checks all fields are valid.
+     */
     const checkAllValid = useCallback(() => {
         let valid = true;
 
@@ -83,6 +91,9 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
         return valid;
     }, [state]);
 
+    /**
+     * For when a Form is submitted, it will check is valid and run the callback
+     */
     const handleOnSubmit = useCallback(
         (event) => {
             if (event.preventDefault) event.preventDefault();
@@ -97,6 +108,10 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     return { state, handleOnChange, handleOnSubmit, isDirty };
 };
 
+/**
+ * This converts the useForm state to a typical object to be useful for posting to servers.
+ * @param state
+ */
 const serializeState = (state: StateSchema): FormData => {
     const formData = {};
 
@@ -107,6 +122,11 @@ const serializeState = (state: StateSchema): FormData => {
     return formData;
 };
 
+/**
+ * Converts a standard object to the validation schema that we have set up above.
+ * @param formData
+ * @param validationSchema
+ */
 const convertFormDataToSchema = (formData: FormData, validationSchema: ValidationStateSchema): StateSchema => {
     const stateSchema = {};
 
