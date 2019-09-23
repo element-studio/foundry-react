@@ -1,16 +1,15 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-
+import { useState, useCallback, useMemo } from 'react';
 import { set } from 'lodash/object';
 
-interface StateSchema {
-    [fieldName: string]: { value: any; error: string };
+export interface StateSchema {
+    [fieldName: string]: { value: any; error: any };
 }
 
 interface ValidationStateSchema {
     [fieldName: string]:
         | {
               validations?: string[]; // 'required'
-              errorMessage?: string;
+              errorMessage?: any;
           }
         | undefined;
 }
@@ -25,37 +24,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     const formVals = useMemo(() => convertFormDataToSchema(formValues, validationSchema), []);
 
     const [state, setState] = useState(formVals);
-    const [disable, setDisable] = useState(true);
     const [isDirty, setIsDirty] = useState(false);
-
-    // Disable button in initial render.
-    useEffect(() => {
-        setDisable(true);
-    }, []);
-
-    // For every changed in our state this will be fired
-    // To be able to disable the button
-    useEffect(() => {
-        if (isDirty) {
-            setDisable(validateState());
-        }
-    }, [state, isDirty]);
-
-    // Used to disable submit button if there's an error in state
-    // or the required field in state has no value.
-    // Wrapped in useCallback to cached the function to avoid intensive memory leaked
-    // in every re-render in component
-    const validateState = useCallback(() => {
-        const hasErrorInState = Object.keys(validationSchema).some(
-            (key): boolean => {
-                const stateError = state[key].error; // state error
-
-                return !!stateError;
-            }
-        );
-
-        return hasErrorInState;
-    }, [state, validationSchema]);
 
     const checkError = useCallback(
         (name, value) => {
@@ -117,6 +86,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     const handleOnSubmit = useCallback(
         (event) => {
             if (event.preventDefault) event.preventDefault();
+
             if (checkAllValid()) {
                 callback(serializeState(state), state);
             }
@@ -124,7 +94,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
         [state, callback]
     );
 
-    return { state, disable, handleOnChange, handleOnSubmit };
+    return { state, handleOnChange, handleOnSubmit, isDirty };
 };
 
 const serializeState = (state: StateSchema): FormData => {
