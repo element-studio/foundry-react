@@ -1,6 +1,7 @@
 import React from 'react';
 import useForm from '../../../../src/hooks/useForm';
-import FormInput from './FormInput';
+import TextInput from '../inputs/TextInput';
+import TextArea from '../inputs/TextArea';
 
 const validationSchema = {
     name: {
@@ -25,7 +26,7 @@ const FormHookExample = () => {
     return (
         <form onSubmit={handleOnSubmit}>
             <fieldset>
-                <FormInput
+                <TextInput
                     formState={state}
                     type="text"
                     label="Name *"
@@ -36,7 +37,7 @@ const FormHookExample = () => {
                 />
             </fieldset>
             <fieldset>
-                <FormInput
+                <TextInput
                     formState={state}
                     type="text"
                     label="Email *"
@@ -47,9 +48,8 @@ const FormHookExample = () => {
                 />
             </fieldset>
             <fieldset>
-                <FormInput
+                <TextArea
                     formState={state}
-                    type="textarea"
                     label="Message "
                     name="message"
                     onChange={(e) => {
