@@ -4,11 +4,12 @@ import { StateSchema } from 'src/hooks/useForm';
 
 interface Props {
     name: string;
-    label: string;
-    onChange: (e) => void;
-    formState: StateSchema;
+    label?: string;
+    className?: string;
     icon?: JSX.Element;
     data?: SelectData[];
+    onChange: (e) => void;
+    formState: StateSchema;
 }
 
 interface SelectData {
@@ -21,19 +22,22 @@ interface SelectData {
  * to illustrate a form input that uses the useForm hook's state.
  * @param param
  */
-const Select = ({ id, name, label, onChange, formState, icon, data, ...rest }: Props & HTMLAttributes<HTMLSelectElement>) => {
+const Select = ({ id, name, className, label, onChange, formState, icon, data, ...rest }: Props & HTMLAttributes<HTMLSelectElement>) => {
+    console.log();
     return (
-        <ShowValidation className={`form-select flow--xsmall`} formState={formState} name={name}>
-            <label className="form-label" htmlFor={name}>
-                {label}
-            </label>
+        <ShowValidation className={`form-select ${className} flow--xsmall`} formState={formState} name={name}>
+            {label && (
+                <label className="form-label" htmlFor={name}>
+                    {label}
+                </label>
+            )}
             <div className="form-field">
                 <select
                     {...rest}
                     className="form-select__input"
                     name={name}
                     onChange={onChange}
-                    value={typeof formState[name] !== 'undefined' ? formState[name].value : null}
+                    value={typeof formState[name] !== 'undefined' && formState[name].value !== null ? formState[name].value : undefined}
                 >
                     {data &&
                         data.map((option) => {

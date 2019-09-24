@@ -6,21 +6,22 @@ interface Props {
     id?: string;
     name: string;
     label: string;
+    className?: string;
+    inputStyle?: 'form-checkbox' | 'form-toggle';
     onChange: (e) => void;
     formState: StateSchema;
-    inputStyle?: 'form-checkbox' | 'form-toggle';
 }
 
 /**
  * Checkbox form input that would be created app side to
  * to illustrate a form input that uses the useForm hook's state.
  */
-const Checkbox = ({ id, name, label, onChange, formState, inputStyle, ...rest }: Props & HTMLAttributes<HTMLInputElement>) => {
+const Checkbox = ({ id, name, label, onChange, formState, inputStyle, className, ...rest }: Props & HTMLAttributes<HTMLInputElement>) => {
     inputStyle = inputStyle || 'form-checkbox';
 
     return (
-        <ShowValidation className={`${inputStyle} flex flex--space-between`} formState={formState} name={name}>
-            <div className="form-field">
+        <ShowValidation className={inputStyle + ' ' + className} formState={formState} name={name}>
+            <div className="form-field flex flex--space-between">
                 <label className="form-label" htmlFor={name}>
                     {label}
                 </label>

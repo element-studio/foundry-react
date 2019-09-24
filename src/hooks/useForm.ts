@@ -9,7 +9,7 @@ interface ValidationStateSchema {
     [fieldName: string]:
         | {
               validations?: string[]; // 'required'
-              errorMessage?: any;
+              errorMessage?: string;
           }
         | undefined;
 }
