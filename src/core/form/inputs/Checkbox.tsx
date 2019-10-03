@@ -10,7 +10,7 @@ interface Props {
     inputStyle?: 'form-checkbox' | 'form-toggle';
     onChange: (e) => void;
     formState: StateSchema;
-    pseudoContent?: any | null;
+    pseudoContent?: JSX.Element | string | number;
 }
 
 /**
