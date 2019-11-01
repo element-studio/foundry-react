@@ -96,7 +96,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
      */
     const handleOnSubmit = useCallback(
         (event) => {
-            if (event.preventDefault) event.preventDefault();
+            if (event && event.preventDefault) event.preventDefault();
 
             if (checkAllValid()) {
                 callback(serializeState(state), state);
