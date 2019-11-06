@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { set } from 'lodash/object';
 
 export interface StateSchema {
@@ -21,10 +21,13 @@ interface FormData {
 type Callback = (formData: FormData, state: StateSchema) => void;
 
 const useForm = (formValues: FormData, validationSchema: ValidationStateSchema = {}, callback: Callback) => {
-    const formVals = useMemo(() => convertFormDataToSchema(formValues, validationSchema), []);
-
+    const formVals = useMemo(() => convertFormDataToSchema(formValues, validationSchema), [formValues]);
     const [state, setState] = useState(formVals);
     const [isDirty, setIsDirty] = useState(false);
+
+    useEffect(() => {
+        setState(formVals);
+    }, [formVals]);
 
     /**
      * Validates an individual fields.
