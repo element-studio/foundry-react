@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default class ToastItem extends React.Component<Props> {
-    public defaultProps = {
+    static defaultProps = {
         type: 'info',
         id: '',
         title: '',
