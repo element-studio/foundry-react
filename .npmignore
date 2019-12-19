@@ -6,7 +6,6 @@
 /src
 /template
 /stories
-.babelrc
 .gitignore
 tsconfig.json
 tslint.json

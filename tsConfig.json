@@ -3,7 +3,7 @@
         "baseUrl": ".",
         "outDir": ".",
         "module": "esnext",
-        "target": "ES6",
+        "target": "ES5",
         "lib": ["es2017", "dom"],
         "sourceMap": true,
         "jsx": "react",
