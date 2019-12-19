@@ -1,3 +1,16 @@
+<h1 align="center" style="border-bottom: none;">📦 foundry-react</h1>
+<h3 align="center">React components built by element studio for use for anyone.</h3>
+<p align="center">
+  <a href="#badge">
+    <img alt="semantic-release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
+  </a>
+</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/foundry-react">
+    <img alt="npm latest version" src="https://img.shields.io/npm/v/foundry-react/latest.svg">
+  </a>
+</p>
+
 # Foundry React
 
 Element studio have compiled a list of super useful components that get reused a lot.
