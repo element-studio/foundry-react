@@ -6,10 +6,10 @@
 /src
 /template
 /stories
-.babelrc
 .gitignore
 tsconfig.json
 tslint.json
+.babelrc
 
 # misc
 .DS_Store

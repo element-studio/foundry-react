@@ -37,7 +37,7 @@ const Select = ({ id, name, className, label, onChange, formState, icon, data, .
                     className="form-select__input"
                     name={name}
                     onChange={onChange}
-                    value={typeof formState[name] !== 'undefined' && formState[name].value !== null ? formState[name].value : undefined}
+                    value={typeof formState[name] !== 'undefined' && formState[name].value !== null ? formState[name].value : ''}
                 >
                     {data &&
                         data.map((option) => {

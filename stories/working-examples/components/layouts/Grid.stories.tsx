@@ -12,7 +12,7 @@ storiesOf('Grid example', module).add('grid', () => {
     return (
         <div>
             <p>yes</p>
-            <Grid x={true}>
+            <Grid x={true} id="grid-layout">
                 <Cell className="small-6">column 1</Cell>
                 <Cell className="small-6">column 2</Cell>
             </Grid>
