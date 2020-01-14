@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
 interface Props {
     x?: boolean;
@@ -9,25 +9,36 @@ interface Props {
     rhythm?: boolean;
     smallOnlyRhythm?: boolean;
     rhythmUniform?: boolean;
-
     className?: string;
     'data-testid'?: string;
     children?: any;
 }
 
-const Grid: React.SFC<Props> = (props): JSX.Element => {
+const Grid = ({
+    x,
+    y,
+    marginX,
+    marginY,
+    rhythm,
+    smallOnlyRhythm,
+    rhythmUniform,
+    className,
+    'data-testid': dataTestid,
+    children,
+    ...rest
+}: Props & HTMLAttributes<HTMLElement>) => {
     const classes: string[] = [];
 
-    if (props.x) classes.push('grid-x');
-    if (props.y) classes.push('grid-y');
-    if (props.marginX) classes.push('grid-margin-x');
-    if (props.marginY) classes.push('grid-margin-y');
-    if (props.rhythm) classes.push('grid-rhythm');
-    if (props.className) classes.push(props.className);
+    if (x) classes.push('grid-x');
+    if (y) classes.push('grid-y');
+    if (marginX) classes.push('grid-margin-x');
+    if (marginY) classes.push('grid-margin-y');
+    if (rhythm) classes.push('grid-rhythm');
+    if (className) classes.push(className);
 
     return (
-        <div data-testid={props['data-testid']} className={classes.join(' ')}>
-            {props.children}
+        <div {...rest} data-testid={dataTestid} className={classes.join(' ')}>
+            {children}
         </div>
     );
 };

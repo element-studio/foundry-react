@@ -55,6 +55,7 @@ const FormHookExample = () => {
                     onChange={(e) => {
                         handleOnChange(e.target.name, !!e.target.checked);
                     }}
+                    pseudoContent={'icon'}
                 />
 
                 <Checkbox
