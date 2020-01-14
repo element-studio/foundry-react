@@ -9,15 +9,24 @@ interface Props {
     rhythm?: boolean;
     smallOnlyRhythm?: boolean;
     rhythmUniform?: boolean;
-
     className?: string;
     'data-testid'?: string;
     children?: any;
 }
 
-const Grid: React.SFC<Props> = ({
-    x, y, marginX, marginY, rhythm, smallOnlyRhythm, rhythmUniform, className, 'data-testid': dataTestid, children, ...rest
-}): JSX.Element => {
+const Grid = ({
+    x,
+    y,
+    marginX,
+    marginY,
+    rhythm,
+    smallOnlyRhythm,
+    rhythmUniform,
+    className,
+    'data-testid': dataTestid,
+    children,
+    ...rest
+}: Props & HTMLAttributes) => {
     const classes: string[] = [];
 
     if (x) classes.push('grid-x');
@@ -28,7 +37,7 @@ const Grid: React.SFC<Props> = ({
     if (className) classes.push(className);
 
     return (
-        <div data-testid={dataTestid} className={classes.join(' ')} {...rest}>
+        <div {...rest} data-testid={dataTestid} className={classes.join(' ')}>
             {children}
         </div>
     );
