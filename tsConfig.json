@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "dist",
+        "outDir": ".",
         "module": "esnext",
         "target": "ES6",
         "lib": ["es2017", "dom"],
@@ -21,12 +21,11 @@
         "allowSyntheticDefaultImports": true,
         "noUnusedParameters": false,
         "paths": {
-            // Remember to add any of these to the webpack config
             "@core/*": ["src/core/*"],
             "@utils/*": ["src/utils/*"]
         }
     },
 
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "scripts"]
+    "exclude": ["node_modules", "hooks", "core", "utils", "scripts"]
 }
