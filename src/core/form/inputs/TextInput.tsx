@@ -29,7 +29,7 @@ const TextInput = ({ type, name, label, className, onChange, formState, ...rest 
                 className="form-text__input"
                 type={type}
                 name={name}
-                value={typeof formState[name] !== 'undefined' && formState[name].value !== null ? formState[name].value : undefined}
+                value={typeof formState[name] !== 'undefined' && formState[name].value !== null ? formState[name].value : ''}
                 onChange={onChange}
             />
         </ShowValidation>

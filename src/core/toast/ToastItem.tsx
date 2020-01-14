@@ -1,23 +1,29 @@
 import * as React from 'react';
-import Transition from 'react-addons-css-transition-group';
 
-export default class ToastItem extends React.Component {
-    constructor(props) {
-        super(props);
+interface Props {
+    id: string;
+    type?: string;
+    title?: string;
+    message?: string;
+    destroyCallback: (id: string) => void;
+}
 
-        this.state = {
-            //
-        };
+export default class ToastItem extends React.Component<Props> {
+    static defaultProps = {
+        type: 'info',
+        id: '',
+        title: '',
+        message: ''
+    };
 
-        this.toastTimer = null;
-        this.toastTimeout = 10000;
-    }
+    private toastTimer?: number;
+    private toastTimeout = 10000;
 
     /*
      * Lifecycle events
      */
-    componentDidMount() {
-        this.toastTimer = setTimeout(() => {
+    public componentDidMount(): void {
+        this.toastTimer = window.setTimeout(() => {
             this.destroyToast();
         }, this.toastTimeout);
     }
@@ -26,26 +32,25 @@ export default class ToastItem extends React.Component {
      * User-driven events
      * @prefix handle_
      */
-    handle_destroy = (e) => {
+    private handle_destroy = (e): void => {
         e.preventDefault();
 
         window.clearTimeout(this.toastTimer);
-
         this.destroyToast();
     };
 
     /*
      * Logic
      */
-    destroyToast = () => {
+    private destroyToast = (): void => {
         if (typeof this.props.destroyCallback === 'function') {
             this.props.destroyCallback(this.props.id);
         }
     };
 
-    render() {
+    public render() {
         return (
-            <div key="toast" className={'toast toast_' + this.props.type + ' ' + this.props.classes}>
+            <div key="toast" className={'toast toast_' + this.props.type}>
                 <h2 className="toast-title type-label">{this.props.title ? this.props.title : this.props.type}</h2>
                 <div className="toast_body type-body">{this.props.message}</div>
                 <svg viewBox="0 0 32 32" width="18" height="18" className="toast-close" onClick={this.handle_destroy}>
@@ -55,11 +60,3 @@ export default class ToastItem extends React.Component {
         );
     }
 }
-
-ToastItem.defaultProps = {
-    type: 'info',
-    classes: '',
-    id: null,
-    title: null,
-    message: null
-};
