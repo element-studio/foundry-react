@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
 interface Props {
     x?: boolean;
@@ -26,7 +26,7 @@ const Grid = ({
     'data-testid': dataTestid,
     children,
     ...rest
-}: Props & HTMLAttributes) => {
+}: Props & HTMLAttributes<HTMLElement>) => {
     const classes: string[] = [];
 
     if (x) classes.push('grid-x');
