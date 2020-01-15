@@ -18,3 +18,9 @@ jobs:
               skip_cleanup: true
               script:
                   - npx semantic-release
+
+# require the branch name to be master (note for PRs this is the base branch name)
+notifications:
+    slack:
+        if: branch = master
+        rooms: '$SLACK_KEY_TOKEN'
