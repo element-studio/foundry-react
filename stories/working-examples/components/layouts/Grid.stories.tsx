@@ -13,8 +13,8 @@ storiesOf('Grid example', module).add('grid', () => {
         <div>
             <p>yes</p>
             <Grid x={true} id="grid-layout">
-                <Cell className="small-6">column 1</Cell>
-                <Cell className="small-6">column 2</Cell>
+                <Cell id="cell-1" className="small-6">column 1</Cell>
+                <Cell id="cell-2" className="small-6">column 2</Cell>
             </Grid>
         </div>
     );
