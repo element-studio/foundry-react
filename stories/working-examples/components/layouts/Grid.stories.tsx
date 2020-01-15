@@ -6,7 +6,7 @@ import Cell from '@core/grid/Cell';
 
 /**
  * ControllableSearchInput Story Example.
- * Have had to create a separate component in here because i wanted to use hooks.
+ * Have had to create a separate component in here because I wanted to use hooks.
  */
 storiesOf('Grid example', module).add('grid', () => {
     return (
