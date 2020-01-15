@@ -23,4 +23,4 @@ jobs:
 notifications:
     slack:
         if: branch = master
-        slack: '$SLACK_KEY_TOKEN'
+        rooms: '$SLACK_KEY_TOKEN'
