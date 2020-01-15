@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
 interface Props {
     className?: string;
@@ -7,13 +7,13 @@ interface Props {
     'data-testid'?: string;
 }
 
-const Cell: React.SFC<Props> = (props): JSX.Element => {
+const Cell = ({ className, children, 'data-testid': dataTestid, ...rest }: Props & HTMLAttributes<HTMLElement>): JSX.Element => {
     const classes = ['cell'];
-    if (props.className) classes.push(props.className);
+    if (className) classes.push(className);
 
     return (
-        <div data-testid={props['data-testid']} className={classes.join(' ')}>
-            {props.children}
+        <div data-testid={dataTestid} className={classes.join(' ')} {...rest}>
+            {children}
         </div>
     );
 };
