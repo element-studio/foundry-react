@@ -26,7 +26,7 @@ const Grid = ({
     'data-testid': dataTestid,
     children,
     ...rest
-}: Props & HTMLAttributes<HTMLElement>) => {
+}: Props & HTMLAttributes<HTMLElement>): JSX.Element => {
     const classes: string[] = [];
 
     if (x) classes.push('grid-x');
