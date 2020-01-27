@@ -136,6 +136,8 @@ export default class TextInput extends Input {
                             selectsEnd={this.props.selectsEnd}
                             minDate={this.props.minDate}
                             maxDate={this.props.maxDate}
+                            showMonthDropdown={this.props.showMonthDropdown}
+                            showYearDropdown={this.props.showYearDropdown}
                             timeIntervals={1}
                             dateFormat={this.props.dateFormat}
                             timeCaption="time"
@@ -185,6 +187,9 @@ const defaultProps = {
     selectsEnd: false,
     minDate: null,
     maxDate: null,
+
+    showMonthDropdown: false,
+    showYearDropdown: false,
 
     required: false,
     readOnly: false,
