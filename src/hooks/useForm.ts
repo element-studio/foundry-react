@@ -17,7 +17,7 @@ interface ValidationStateSchema {
     | {
         validations?: string[]; // 'required'
         errorMessage?: string;
-        customValidation?: (val) => boolean; // return false if vailed
+        customValidation?: (val) => boolean; // return false if failed
     }
     | undefined;
 }
