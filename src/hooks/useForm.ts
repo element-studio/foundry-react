@@ -17,6 +17,7 @@ interface ValidationStateSchema {
     | {
         validations?: string[]; // 'required'
         errorMessage?: string;
+        customValidation?: (val) => boolean; // return false if vailed
     }
     | undefined;
 }
@@ -45,11 +46,22 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
 
             const vs = validationSchema[name];
             const validations = vs ? vs.validations : undefined;
+
+            const customValidation = vs ? vs.customValidation : undefined;
+
             if (vs && validations && validations.indexOf('required') > -1) {
                 if (!value && value !== 0) {
                     error = vs.errorMessage || 'This field is required.';
                 }
             }
+
+
+            if (vs && customValidation && typeof customValidation === 'function') {
+                if(!customValidation(value)){
+                    error = vs.errorMessage || 'This field has an error.';
+                }
+            }
+
 
             return error;
         },
