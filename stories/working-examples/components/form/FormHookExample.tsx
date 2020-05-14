@@ -7,8 +7,14 @@ import Select from '@core/form/inputs/Select';
 
 const validationSchema = {
     name: {
-        validations: ['required'],
-        errorMessage: 'Name is required'
+        errorMessage: 'Name needs to be greater than 2 characters long',
+        customValidation: (val) => {
+            if(val.length > 2){
+                return true;
+            }
+
+            return false;
+        }
     },
 
     email: {
@@ -17,7 +23,7 @@ const validationSchema = {
     },
     selectthisnamething: {
         validations: ['required'],
-        errorMessage: 'selectthisnamething is required'
+        errorMessage: 'selectthisnamething is required',
     },
     checkyboxy: {
         validations: ['required'],
