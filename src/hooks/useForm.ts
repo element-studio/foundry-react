@@ -2,9 +2,7 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-restricted-syntax */
-import {
-    useState, useCallback
-} from 'react';
+import { useState, useCallback } from 'react';
 import { set } from 'lodash/object';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
@@ -14,12 +12,12 @@ export interface StateSchema {
 
 interface ValidationStateSchema {
     [fieldName: string]:
-    | {
-        validations?: string[]; // 'required'
-        errorMessage?: string;
-        customValidation?: (val) => boolean; // return false if failed
-    }
-    | undefined;
+        | {
+              validations?: string[]; // 'required'
+              errorMessage?: string;
+              customValidation?: (val) => boolean; // return false if failed
+          }
+        | undefined;
 }
 
 interface FormData {
@@ -55,13 +53,11 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
                 }
             }
 
-
             if (vs && customValidation && typeof customValidation === 'function') {
-                if(!customValidation(value)){
+                if (!customValidation(value)) {
                     error = vs.errorMessage || 'This field has an error.';
                 }
             }
-
 
             return error;
         },
@@ -79,7 +75,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
 
             setState((prevState) => ({
                 ...prevState,
-                [name]: { value, error }
+                [name]: { value, error },
             }));
         },
         [checkError]
@@ -104,7 +100,7 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
 
             newState = {
                 ...newState,
-                [name]: { value, error }
+                [name]: { value, error },
             };
         });
 
@@ -129,7 +125,11 @@ const useForm = (formValues: FormData, validationSchema: ValidationStateSchema =
     );
 
     return {
-        state, handleOnChange, handleOnSubmit, isDirty, hasErrors
+        state,
+        handleOnChange,
+        handleOnSubmit,
+        isDirty,
+        hasErrors,
     };
 };
 
@@ -141,12 +141,14 @@ const serializeState = (state: StateSchema): FormData => {
     const formData = {};
 
     Object.keys(state).forEach((key) => {
-        set(formData, key, state[key].value);
+        const val = state[key].value;
+        if (typeof val !== 'undefined') {
+            set(formData, key, state[key].value);
+        }
     });
 
     return formData;
 };
-
 
 const flattenObject = (ob) => {
     const toReturn = {};
@@ -188,6 +190,5 @@ const convertFormDataToSchema = (formData: FormData, validationSchema: Validatio
 
     return stateSchema;
 };
-
 
 export default useForm;
